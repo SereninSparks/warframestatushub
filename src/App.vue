@@ -1,18 +1,20 @@
 <template>
-    <div class="flex flex-col">
-        <div class="w-full md:w-1/2 lg:w-1/3">
-            <card>Hello yes I am real card do you wanna go skateboards?</card>
-        </div>
+    <div class="flex flex-col p-2">
+        <Suspense>
+            <div class="w-full md:w-1/2 xl:w-1/3">
+                <VoidTrader />
+            </div>
+        </Suspense>
     </div>
 </template>
 
 <script lang="ts">
-import Card from './components/Card.vue';
+import VoidTrader from './components/VoidTrader.vue';
 
 export default {
     name: 'App',
     components: {
-        Card,
+        VoidTrader,
     },
 }
 </script>
