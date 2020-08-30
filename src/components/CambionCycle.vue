@@ -9,7 +9,7 @@
                 Current: <strong>{{ getActive() }}</strong>
             </div>
 
-            <timer :target="cambionCycle.expiry" />
+            <timer :target="cambionCycle.expiry" @expired="callApi" />
         </div>
     </card>
 </template>
@@ -30,11 +30,14 @@ export default {
     },
     async setup() {
         const { call, result } = useWarframeStatusApi<CambionCycle>();
-        await call(Platform.PC, Endpoint.CAMBION_CYCLE);
+
+        const callApi = async () => await call(Platform.PC, Endpoint.CAMBION_CYCLE);
+        await callApi();
 
         return {
             cambionCycle: result,
             getActive: () => result.value.active.slice(0, 1).toUpperCase() + result.value.active.slice(1),
+            callApi,
         };
     },
 }

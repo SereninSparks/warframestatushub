@@ -13,7 +13,7 @@ export function useWarframeStatusApi<T>(): UsesWarframeStatusApi<T> {
 
     const result = ref(null);
 
-    async function call<T>(platform: Platform, endpoint: Endpoint): Promise<void> {
+    async function call(platform: Platform, endpoint: Endpoint): Promise<void> {
         result.value = await api.call<T>(platform, endpoint);
     }
 

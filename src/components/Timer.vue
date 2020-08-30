@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
+import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 
 interface Props {
     target: string;
@@ -17,7 +17,7 @@ interface Props {
 export default {
     name: 'Timer',
     props: ['target'],
-    setup(props: Props) {
+    setup(props: Props, context) {
         function updateDiffRefs() {
             diff.value = targetDate.getTime() - new Date().getTime();
 
@@ -39,14 +39,19 @@ export default {
             return digit.toString();
         }
 
+        function stop(): void {
+            clearInterval(intervalId);
+        }
+
+        const oneSecond = 1000;
         const targetDate = new Date(props.target);
-        const secondDivisor = 1000;
+        const secondDivisor = oneSecond;
         const minuteDivisor = secondDivisor * 60;
         const hourDivisor = minuteDivisor * 60;
         const dayDivisor = hourDivisor * 24;
 
         const diff = ref<number>(targetDate.getTime() - new Date().getTime());
-        const isExpired = computed<boolean>(() => diff.value <= 0);
+        const isExpired = computed<boolean>(() => diff.value <= oneSecond);
 
         const daysDiff = ref<number>(0);
         const hoursDiff = ref<number>(0);
@@ -64,14 +69,20 @@ export default {
 
         let intervalId!: NodeJS.Timeout;
 
+        watch(diff, diff => {
+            // If below 1000ms, it has been floored thus it's 0 seconds
+            if (diff <= oneSecond) {
+                stop();
+                context.emit('expired');
+            }
+        });
+
         onMounted(() => {
             intervalId = setInterval(updateDiffRefs, 1000);
             updateDiffRefs();
         });
 
-        onBeforeUnmount(() => {
-            clearInterval(intervalId);
-        });
+        onBeforeUnmount(stop);
 
         return {
             isExpired,
