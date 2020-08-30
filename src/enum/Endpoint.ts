@@ -1,3 +1,4 @@
 export enum Endpoint {
-    VOIDTRADER = 'voidTrader',
+    VOID_TRADER = 'voidTrader',
+    CAMBION_CYCLE = 'cambionCycle',
 }

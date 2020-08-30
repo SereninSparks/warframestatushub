@@ -16,7 +16,7 @@ export default {
 
 <style scoped>
     .card {
-        @apply px-4 py-3 rounded border border-gray-300 shadow;
+        @apply px-4 py-3 m-1 rounded border border-gray-300 shadow;
     }
 
     header {

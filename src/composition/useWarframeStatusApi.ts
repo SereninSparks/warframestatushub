@@ -1,4 +1,4 @@
-import {ref, Ref} from 'vue';
+import {Ref, ref} from 'vue';
 import {Endpoint} from '../enum/Endpoint';
 import {Platform} from '../enum/Platform';
 import {WarframeStatusApi} from '../api/WarframeStatusApi';

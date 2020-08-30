@@ -34,7 +34,7 @@ export default {
     },
     async setup() {
         const { call, result } = useWarframeStatusApi<VoidTrader>();
-        await call(Platform.PC, Endpoint.VOIDTRADER);
+        await call(Platform.PC, Endpoint.VOID_TRADER);
 
         const newLocationKnown = computed<boolean>(() => !result.value.endString.startsWith('-'));
 
