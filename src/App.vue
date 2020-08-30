@@ -1,5 +1,5 @@
 <template>
-    <div class="flex">
+    <div class="md:flex">
         <Suspense>
             <template #default>
                 <div class="w-full md:w-1/2 xl:w-1/3">
