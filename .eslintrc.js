@@ -11,5 +11,6 @@ module.exports = {
         quotes: ['error', 'single'],
         'comma-dangle': ['error', 'only-multiline'],
         'array-bracket-spacing': ['error', 'never'],
+        'sort-imports': 'error',
     },
 }

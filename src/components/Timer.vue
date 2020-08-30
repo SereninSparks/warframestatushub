@@ -1,107 +1,88 @@
 <template>
     <div class="timer" :class="{ 'timer--expired': isExpired }">
-        <span v-if="!hideDays">{{ displayDays }}D</span>
-        <span v-if="!hideHours">{{ displayHours }}H</span>
-        <span v-if="!hideMinutes">{{ displayMinutes }}M</span>
-        <span>{{ displaySeconds }}S</span>
+        <span v-if="!hideDays">{{ days }}D</span>
+        <span v-if="!hideHours">{{ hours }}H</span>
+        <span v-if="!hideMinutes">{{ minutes }}M</span>
+        <span>{{ seconds }}S</span>
     </div>
 </template>
 
 <script lang="ts">
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
+
+interface Props {
+    target: string;
+}
+
 export default {
     name: 'Timer',
-    props: {
-        target: {
-            type: String,
-            required: true,
-        },
-    },
-    data() {
-        return {
-            days: 0,
-            hours: 0,
-            minutes: 0,
-            seconds: 0,
-            intervalId: null,
-        };
-    },
-    computed: {
-        targetDate(): Date {
-            return new Date(this.target);
-        },
-        secondDivisor(): number {
-            return 1000;
-        },
-        minuteDivisor(): number {
-            return this.secondDivisor * 60;
-        },
-        hourDivisor(): number {
-            return this.minuteDivisor * 60;
-        },
-        dayDivisor(): number {
-            return this.hourDivisor * 60;
-        },
-        isExpired(): boolean {
-            return this.targetDate.getTime() - new Date().getTime() <= 0;
-        },
-        displayDays(): string {
-            return this.formatDigit(this.days);
-        },
-        displayHours(): string {
-            return this.formatDigit(this.hours);
-        },
-        displayMinutes(): string {
-            return this.formatDigit(this.minutes);
-        },
-        displaySeconds(): string {
-            return this.formatDigit(this.seconds);
-        },
-        hideDays(): boolean {
-            return !this.isExpired && this.days === 0;
-        },
-        hideHours(): boolean {
-            return !this.isExpired && this.hideDays && this.hours === 0
-        },
-        hideMinutes(): boolean {
-            return !this.isExpired && this.hideHours && this.minutes === 0;
-        },
-    },
-    mounted() {
-        this.start();
-    },
-    beforeUnmount() {
-        this.stop();
-    },
-    methods: {
-        start(): void {
-            this.intervalId = setInterval(this.showRemaining, 1000);
-            this.showRemaining();
-        },
-        stop(): void {
-            clearInterval(this.intervalId);
-        },
-        showRemaining(): void {
-            const now = new Date();
+    props: ['target'],
+    setup(props: Props) {
+        function updateDiffRefs() {
+            diff.value = targetDate.getTime() - new Date().getTime();
 
-            const diff = this.targetDate.getTime() - now.getTime();
+            daysDiff.value = Math.floor(diff.value / dayDivisor);
+            hoursDiff.value = Math.floor((diff.value % dayDivisor) / hourDivisor);
+            minutesDiff.value = Math.floor((diff.value % hourDivisor) / minuteDivisor);
+            secondsDiff.value = Math.floor((diff.value % minuteDivisor) / secondDivisor);
 
-            if (diff < 0) {
-                this.stop();
-                return;
-            }
+            hideDays.value = !isExpired.value && daysDiff.value === 0;
+            hideHours.value = !isExpired.value && hoursDiff.value === 0;
+            hideMinutes.value = !isExpired.value && minutesDiff.value === 0;
+        }
 
-            this.days = Math.floor(diff / this.dayDivisor);
-            this.hours = Math.floor((diff % this.dayDivisor) / this.hourDivisor);
-            this.minutes = Math.floor((diff % this.hourDivisor) / this.minuteDivisor);
-            this.seconds = Math.floor((diff % this.minuteDivisor) / this.secondDivisor);
-        },
-        formatDigit(digit: number): string {
+        function formatDigit(digit: number): string {
             if (digit < 10) {
                 return `0${digit}`;
             }
 
             return digit.toString();
-        },
+        }
+
+        const targetDate = new Date(props.target);
+        const secondDivisor = 1000;
+        const minuteDivisor = secondDivisor * 60;
+        const hourDivisor = minuteDivisor * 60;
+        const dayDivisor = hourDivisor * 24;
+
+        const diff = ref<number>(targetDate.getTime() - new Date().getTime());
+        const isExpired = computed<boolean>(() => diff.value <= 0);
+
+        const daysDiff = ref<number>(0);
+        const hoursDiff = ref<number>(0);
+        const minutesDiff = ref<number>(0);
+        const secondsDiff = ref<number>(0);
+
+        const days = computed<string>(() => formatDigit(daysDiff.value));
+        const hours = computed<string>(() => formatDigit(hoursDiff.value));
+        const minutes = computed<string>(() => formatDigit(minutesDiff.value));
+        const seconds = computed<string>(() => formatDigit(secondsDiff.value));
+
+        const hideDays = ref<boolean>(false);
+        const hideHours = ref<boolean>(false);
+        const hideMinutes = ref<boolean>(false);
+
+        let intervalId!: NodeJS.Timeout;
+
+        onMounted(() => {
+            intervalId = setInterval(updateDiffRefs, 1000);
+            updateDiffRefs();
+        });
+
+        onBeforeUnmount(() => {
+            clearInterval(intervalId);
+        });
+
+        return {
+            isExpired,
+            days,
+            hours,
+            minutes,
+            seconds,
+            hideDays,
+            hideHours,
+            hideMinutes,
+        }
     },
 }
 </script>

@@ -7,9 +7,8 @@
 
             <div class="flex justify-between">
                 <div>
-                    <span v-if="voidTrader.active">Departs from </span>
-                    <span v-else>Arrives at </span>
-                    <strong>{{ voidTrader.location }}</strong>
+                    {{ voidTraderStatus }}
+                    <strong v-if="newLocationKnown">{{ voidTrader.location }}</strong>
                 </div>
 
                 <timer :target="voidTrader.active ? voidTrader.expiry : voidTrader.activation" />
@@ -20,11 +19,12 @@
 
 <script lang="ts">
 import Card from './Card.vue';
-import {useWarframeStatusApi} from '../composition/useWarframeStatusApi';
-import {Platform} from '../enum/Platform';
 import {Endpoint} from '../enum/Endpoint';
-import {VoidTrader} from '../models/VoidTrader'; // eslint-disable-line
+import {Platform} from '../enum/Platform';
 import Timer from './Timer.vue';
+import {VoidTrader} from '../models/VoidTrader'; // eslint-disable-line
+import {computed} from 'vue';
+import {useWarframeStatusApi} from '../composition/useWarframeStatusApi';
 
 export default {
     name: 'VoidTrader',
@@ -34,11 +34,28 @@ export default {
     },
     async setup() {
         const { call, result } = useWarframeStatusApi<VoidTrader>();
-
         await call(Platform.PC, Endpoint.VOIDTRADER);
+
+        const newLocationKnown = computed<boolean>(() => !result.value.endString.startsWith('-'));
+
+        const voidTraderStatus = computed<string>(() => {
+            const { active } = result.value;
+
+            if (!active && !newLocationKnown) {
+                return 'Next location not known yet';
+            }
+
+            if (!active) {
+                return 'Arrives at';
+            }
+
+            return 'Departs from';
+        });
 
         return {
             voidTrader: result,
+            newLocationKnown,
+            voidTraderStatus,
         };
     }
 }
