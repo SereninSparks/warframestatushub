@@ -7,6 +7,7 @@
         "lint": "eslint --ext .vue,.ts,.js ."
     },
     "dependencies": {
+        "localforage": "^1.9.0",
         "vue": "^3.0.0-rc.1"
     },
     "devDependencies": {
