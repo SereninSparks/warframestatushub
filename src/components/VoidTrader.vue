@@ -11,7 +11,7 @@
                     <strong v-if="newLocationKnown">{{ voidTrader.location }}</strong>
                 </div>
 
-                <timer :target="voidTrader.active ? voidTrader.expiry : voidTrader.activation" @expired="callApi" />
+                <timer :target="voidTrader.active ? voidTrader.expiry : voidTrader.activation" />
             </div>
         </card>
     </div>
@@ -35,8 +35,7 @@ export default {
     async setup() {
         const { call, result } = useWarframeStatusApi<VoidTrader>();
 
-        const callApi = async () => await call(Platform.PC, Endpoint.VOID_TRADER);
-        await callApi();
+        await call(Platform.PC, Endpoint.VOID_TRADER);
 
         const newLocationKnown = computed<boolean>(() => !result.value.endString?.startsWith('-'));
 
@@ -58,7 +57,6 @@ export default {
             voidTrader: result,
             newLocationKnown,
             voidTraderStatus,
-            callApi,
         };
     }
 }
