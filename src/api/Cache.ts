@@ -94,7 +94,7 @@ export class Cache {
         const lastChecked = lastCheckedAt.getTime();
         const activation = activationDate.getTime();
 
-        return activation < lastChecked && now > lastChecked;
+        return lastChecked < activation && now > activation;
     }
 
     private makeKey(platform: Platform, endpoint: Endpoint): string
