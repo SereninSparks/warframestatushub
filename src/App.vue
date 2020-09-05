@@ -7,6 +7,9 @@
                 </div>
 
                 <div class="w-full md:w-1/2 xl:w-1/3">
+                    <EarthCycle />
+                    <CetusCycle />
+                    <VallisCycle />
                     <CambionCycle />
                 </div>
             </template>
@@ -29,6 +32,9 @@
 <script lang="ts">
 import CambionCycle from './components/CambionCycle.vue';
 import Card from './components/Card.vue';
+import CetusCycle from './components/CetusCycle.vue';
+import EarthCycle from './components/EarthCycle.vue';
+import VallisCycle from './components/VallisCycle.vue';
 import VoidTrader from './components/VoidTrader.vue';
 
 export default {
@@ -36,6 +42,9 @@ export default {
     components: {
         Card,
         CambionCycle,
+        CetusCycle,
+        EarthCycle,
+        VallisCycle,
         VoidTrader,
     },
 }
