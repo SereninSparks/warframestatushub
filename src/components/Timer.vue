@@ -32,11 +32,7 @@ export default {
         }
 
         function formatDigit(digit: number): string {
-            if (digit < 10) {
-                return `0${digit}`;
-            }
-
-            return digit.toString();
+            return `0${Math.max(0, digit)}`.substr(-2);
         }
 
         function stop(): void {
