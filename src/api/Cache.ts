@@ -50,6 +50,8 @@ export class Cache {
             throw new Error('Expired');
         }
 
+        await this.touch(platform, endpoint);
+
         return value;
     }
 
