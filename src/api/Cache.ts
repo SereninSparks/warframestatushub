@@ -1,11 +1,7 @@
 import {BrowserStorage} from '../storage/BrowserStorage';
 import {Endpoint} from '../enum/Endpoint';
+import {Entity} from './Entity';
 import {Platform} from '../enum/Platform';
-
-type Entity = {
-    expiry: string;
-    activation: string;
-}
 
 export class Cache {
     private static cacheInstance?: Cache;
@@ -59,6 +55,8 @@ export class Cache {
         const key = this.makeKey(platform, endpoint);
 
         await this.storage.setItem<T>(key, object);
+
+        await this.touch(platform, endpoint);
     }
 
     public async touch(platform: Platform, endpoint: Endpoint): Promise<void> {

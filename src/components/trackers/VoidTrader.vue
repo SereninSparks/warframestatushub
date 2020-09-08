@@ -18,13 +18,13 @@
 </template>
 
 <script lang="ts">
-import Card from './Card.vue';
-import {Endpoint} from '../enum/Endpoint';
-import {Platform} from '../enum/Platform';
-import Timer from './Timer.vue';
-import {VoidTrader} from '../models/VoidTrader'; // eslint-disable-line
+import Card from '../Card.vue';
+import {Endpoint} from '../../enum/Endpoint';
+import {Platform} from '../../enum/Platform';
+import Timer from '../Timer.vue';
+import {VoidTrader} from '../../models/VoidTrader'; // eslint-disable-line
 import {computed} from 'vue';
-import {useWarframeStatusApi} from '../composition/useWarframeStatusApi';
+import {useWarframeStatusApi} from '../../composition/useWarframeStatusApi';
 
 export default {
     name: 'VoidTrader',

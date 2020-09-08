@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts">
-import {CambionCycle} from '../models/CambionCycle'; // eslint-disable-line
-import Card from './Card.vue';
-import {Endpoint} from '../enum/Endpoint';
-import {Platform} from '../enum/Platform';
-import Timer from './Timer.vue';
-import {useWarframeStatusApi} from '../composition/useWarframeStatusApi';
+import {CambionCycle} from '../../models/CambionCycle'; // eslint-disable-line
+import Card from '../Card.vue';
+import {Endpoint} from '../../enum/Endpoint';
+import {Platform} from '../../enum/Platform';
+import Timer from '../Timer.vue';
+import {useWarframeStatusApi} from '../../composition/useWarframeStatusApi';
 
 export default {
     name: 'CambionCycle',

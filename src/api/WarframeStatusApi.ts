@@ -1,5 +1,6 @@
 import {Cache} from './Cache';
 import {Endpoint} from '../enum/Endpoint';
+import {Entity} from './Entity';
 import {Platform} from '../enum/Platform';
 
 interface ErrorResponse {
@@ -12,7 +13,7 @@ export class WarframeStatusApi {
 
     private readonly BASE_URL = 'https://api.warframestat.us';
 
-    public async call<T>(platform: Platform, endpoint: Endpoint): Promise<T> {
+    public async call<T extends Entity>(platform: Platform, endpoint: Endpoint): Promise<T> {
         try {
             return await this.cache.get<T>(platform, endpoint);
         } catch {
@@ -22,8 +23,6 @@ export class WarframeStatusApi {
 
             return data;
         }
-
-
     }
 
     private async callFromRemote<T>(platform: Platform, endpoint: Endpoint): Promise<T> {

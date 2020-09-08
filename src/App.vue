@@ -36,14 +36,14 @@
 </template>
 
 <script lang="ts">
-import CambionCycle from './components/CambionCycle.vue';
+import CambionCycle from './components/trackers/CambionCycle.vue';
 import Card from './components/Card.vue';
-import CetusCycle from './components/CetusCycle.vue';
-import EarthCycle from './components/EarthCycle.vue';
+import CetusCycle from './components/trackers/CetusCycle.vue';
+import EarthCycle from './components/trackers/EarthCycle.vue';
 import Footer from './components/layout/Footer.vue';
 import Header from './components/layout/Header.vue';
-import VallisCycle from './components/VallisCycle.vue';
-import VoidTrader from './components/VoidTrader.vue';
+import VallisCycle from './components/trackers/VallisCycle.vue';
+import VoidTrader from './components/trackers/VoidTrader.vue';
 
 export default {
     name: 'App',

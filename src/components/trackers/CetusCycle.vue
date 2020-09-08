@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts">
-import Card from '../components/Card.vue';
-import {Endpoint} from '../enum/Endpoint';
-import {Platform} from '../enum/Platform';
-import Timer from '../components/Timer.vue';
-import {CetusCycle} from '../models/CetusCycle'; // eslint-disable-line
-import {useWarframeStatusApi} from '../composition/useWarframeStatusApi';
+import Card from '../Card.vue';
+import {Endpoint} from '../../enum/Endpoint';
+import {Platform} from '../../enum/Platform';
+import Timer from '../Timer.vue';
+import {CetusCycle} from '../../models/CetusCycle'; // eslint-disable-line
+import {useWarframeStatusApi} from '../../composition/useWarframeStatusApi';
 
 export default {
     name: 'CetusCycle',
