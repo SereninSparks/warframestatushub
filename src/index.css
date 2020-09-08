@@ -4,6 +4,16 @@
 
 @import 'tailwindcss/utilities';
 
+:root {
+    --header-size: 50px;
+    --app-size: 1fr;
+    --footer-size: 75px;
+}
+
 body {
     @apply font-sans text-base;
+}
+
+a {
+    @apply text-blue-800;
 }
