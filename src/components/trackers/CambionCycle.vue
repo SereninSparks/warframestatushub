@@ -1,5 +1,5 @@
 <template>
-    <card>
+    <card v-if="cambionCycle">
         <template v-slot:header>
             Cambion Cycle
         </template>
@@ -18,9 +18,11 @@
 import {CambionCycle} from '../../models/CambionCycle'; // eslint-disable-line
 import Card from '../Card.vue';
 import {Endpoint} from '../../enum/Endpoint';
-import {Platform} from '../../enum/Platform';
+import {Platform} from '../../enum/Platform'; // eslint-disable-line
 import Timer from '../Timer.vue';
+import {usePlatforms} from '../../composition/usePlatforms';
 import {useWarframeStatusApi} from '../../composition/useWarframeStatusApi';
+import {watch} from 'vue';
 
 export default {
     name: 'CambionCycle',
@@ -30,8 +32,13 @@ export default {
     },
     async setup() {
         const { call, result } = useWarframeStatusApi<CambionCycle>();
+        const {platform} = usePlatforms;
 
-        await call(Platform.PC, Endpoint.CAMBION_CYCLE);
+        watch(platform, async (nextPlatform: Platform) => {
+            await call(nextPlatform, Endpoint.CAMBION_CYCLE);
+        }, {
+            immediate: true,
+        });
 
         return {
             cambionCycle: result,

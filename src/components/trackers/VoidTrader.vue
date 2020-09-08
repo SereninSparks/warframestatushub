@@ -1,6 +1,6 @@
 <template>
     <div class="void-trader">
-        <card>
+        <card v-if="voidTrader">
             <template v-slot:header>
                 {{ voidTrader.character }}
             </template>
@@ -18,12 +18,13 @@
 </template>
 
 <script lang="ts">
+import {computed, watch} from 'vue';
 import Card from '../Card.vue';
 import {Endpoint} from '../../enum/Endpoint';
-import {Platform} from '../../enum/Platform';
+import {Platform} from '../../enum/Platform'; // eslint-disable-line
 import Timer from '../Timer.vue';
 import {VoidTrader} from '../../models/VoidTrader'; // eslint-disable-line
-import {computed} from 'vue';
+import {usePlatforms} from '../../composition/usePlatforms';
 import {useWarframeStatusApi} from '../../composition/useWarframeStatusApi';
 
 export default {
@@ -34,8 +35,13 @@ export default {
     },
     async setup() {
         const { call, result } = useWarframeStatusApi<VoidTrader>();
+        const {platform} = usePlatforms;
 
-        await call(Platform.PC, Endpoint.VOID_TRADER);
+        watch(platform, async (nextPlatform: Platform) => {
+            await call(nextPlatform, Endpoint.VOID_TRADER);
+        }, {
+            immediate: true,
+        });
 
         const newLocationKnown = computed<boolean>(() => !result.value.endString?.startsWith('-'));
 

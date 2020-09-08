@@ -1,6 +1,7 @@
 import {Ref, ref} from 'vue';
 import {Cache} from '../api/Cache';
 import {Endpoint} from '../enum/Endpoint';
+import {Entity} from '../api/Entity';
 import {Platform} from '../enum/Platform';
 import {WarframeStatusApi} from '../api/WarframeStatusApi';
 
@@ -9,7 +10,7 @@ export interface UsesWarframeStatusApi<T> {
     result: Ref<T>;
 }
 
-export function useWarframeStatusApi<T>(): UsesWarframeStatusApi<T> {
+export function useWarframeStatusApi<T extends Entity>(): UsesWarframeStatusApi<T> {
     const api = new WarframeStatusApi(Cache.instance);
 
     const result = ref();

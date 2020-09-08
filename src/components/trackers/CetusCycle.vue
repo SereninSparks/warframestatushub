@@ -4,7 +4,7 @@
             Cetus Cycle
         </template>
 
-        <div class="flex justify-between">
+        <div class="flex justify-between" v-if="cetusCycle">
             <div>
                 Current: <strong>{{ getActive() }}</strong>
             </div>
@@ -17,10 +17,12 @@
 <script lang="ts">
 import Card from '../Card.vue';
 import {Endpoint} from '../../enum/Endpoint';
-import {Platform} from '../../enum/Platform';
+import {Platform} from '../../enum/Platform'; // eslint-disable-line
 import Timer from '../Timer.vue';
 import {CetusCycle} from '../../models/CetusCycle'; // eslint-disable-line
+import {usePlatforms} from '../../composition/usePlatforms';
 import {useWarframeStatusApi} from '../../composition/useWarframeStatusApi';
+import {watch} from 'vue';
 
 export default {
     name: 'CetusCycle',
@@ -30,8 +32,13 @@ export default {
     },
     async setup() {
         const { result, call } = await useWarframeStatusApi<CetusCycle>();
+        const {platform} = usePlatforms;
 
-        await call(Platform.PC, Endpoint.CETUS_CYCLE);
+        watch(platform, async (nextPlatform: Platform) => {
+            await call(nextPlatform, Endpoint.CETUS_CYCLE);
+        }, {
+            immediate: true,
+        });
 
         return {
             cetusCycle: result,
