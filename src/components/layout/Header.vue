@@ -1,19 +1,15 @@
 <template>
-    <header class="px-2 flex items-center justify-between">
-        <Logo />
-
+    <header class="px-2 flex items-center justify-end">
         <PlatformPicker />
     </header>
 </template>
 
 <script>
-import Logo from './Logo.vue';
 import PlatformPicker from '../platform/PlatformPicker.vue';
 
 export default {
     name: 'Header',
     components: {
-        Logo,
         PlatformPicker,
     },
 }
