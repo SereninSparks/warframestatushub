@@ -17,8 +17,8 @@
 </template>
 
 <script lang="ts">
-import creditsIcon from '../../assets/credits.webp';
-import ducatsIcon from '../../assets/ducats.webp';
+import creditsIcon from '../../assets/credits.png';
+import ducatsIcon from '../../assets/ducats.png';
 
 export default {
     name: 'VoidTraderItem',
