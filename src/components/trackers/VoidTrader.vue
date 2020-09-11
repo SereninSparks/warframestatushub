@@ -13,6 +13,12 @@
 
                 <timer :target="voidTrader.active ? voidTrader.expiry : voidTrader.activation" />
             </div>
+
+            <ul class="mt-2" v-if="voidTrader.inventory.length > 0">
+                <li v-for="item of voidTrader.inventory" :key="item.item">
+                    <VoidTraderItem :name="item.item" :credits="item.credits" :ducats="item.ducats" />
+                </li>
+            </ul>
         </card>
     </div>
 </template>
@@ -23,6 +29,7 @@ import Card from '../Card.vue';
 import {Endpoint} from '../../enum/Endpoint';
 import {Platform} from '../../enum/Platform'; // eslint-disable-line
 import Timer from '../Timer.vue';
+import VoidTraderItem from './VoidTraderItem.vue';
 import {VoidTrader} from '../../models/VoidTrader'; // eslint-disable-line
 import {usePlatforms} from '../../composition/usePlatforms';
 import {useWarframeStatusApi} from '../../composition/useWarframeStatusApi';
@@ -32,6 +39,7 @@ export default {
     components: {
         Card,
         Timer,
+        VoidTraderItem,
     },
     async setup() {
         const { call, result } = useWarframeStatusApi<VoidTrader>();
